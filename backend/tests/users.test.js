@@ -197,7 +197,6 @@ describe("POST /api/account route -> create new user", () => {
 
     expect(response.status).toBe(201);
     account3_id = response.body.data.id;
-    console.log(response.headers["set-cookie"]);
   });
 });
 
@@ -213,7 +212,7 @@ describe("POST /api/account route -> check if email exists", () => {
     expect(response.status).toBe(400);
   });
 });
-/*
+
 describe("POST /api/users/login route -> login process", () => {
   it("it should return 400 status code -> email is missing", async () => {
     const response = await request(app).post("/api/users/login").send();
@@ -224,11 +223,12 @@ describe("POST /api/users/login route -> login process", () => {
       .post("/api/users/login")
       .send({ email: "user1@gmail.com" });
     expect(response.status).toBe(400);
+    console.log(response.body);
   });
   it("it should return 400 status code -> email not exists", async () => {
     const response = await request(app)
       .post("/api/users/login")
-      .send({ email: "user2@gmail.com", password: "Password14" });
+      .send({ email: "user4@gmail.com", password: "Password14" });
     expect(response.status).toBe(400);
   });
   it("it should return 400 status code -> incorrect password", async () => {
@@ -242,10 +242,10 @@ describe("POST /api/users/login route -> login process", () => {
       .post("/api/users/login")
       .send({ email: "user1@gmail.com", password: "Password14!" });
     expect(response.status).toBe(200);
-    token = response.body.token;
+    //console.log(response.headers["set-cookie"]);
   });
 });
-
+/*
 describe("PUT /api/users/image route -> update user image", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const response = await request(app).put("/api/users/image");
