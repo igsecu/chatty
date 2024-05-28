@@ -23,9 +23,13 @@ const User = db.define(
       allowNull: false,
       unique: true,
     },
-    image: {
+    password: {
       type: DataTypes.STRING,
-      defaultValue: null,
+      allowNull: false,
+    },
+    state: {
+      type: DataTypes.STRING,
+      defaultValue: "Hello, I'm using Chatty!",
     },
     image_id: {
       type: DataTypes.STRING,
