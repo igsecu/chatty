@@ -239,12 +239,20 @@ describe("POST /api/users/login route -> login process", () => {
       .send({ email: "user1@gmail.com", password: "Password14" });
     expect(response.status).toBe(400);
   });
-  it("it should return 200 status code -> login successfull", async () => {
+  it("it should return 200 status code -> login successful", async () => {
     const response = await request(app)
       .post("/api/users/login")
       .send({ email: "user1@gmail.com", password: "Password14!" });
     expect(response.status).toBe(200);
     cookie = response.headers["set-cookie"];
+    //console.log(response.headers["set-cookie"]);
+  });
+  it("it should return 400 status code -> user logged in", async () => {
+    const response = await request(app)
+      .post("/api/users/login")
+      .send({ email: "user1@gmail.com", password: "Password14!" })
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
     //console.log(response.headers["set-cookie"]);
   });
 });
@@ -255,6 +263,13 @@ describe("POST /api/users/logout route -> logout process", () => {
       .post("/api/users/logout")
       .set("Cookie", cookie);
     expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
+  });
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app)
+      .post("/api/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(401);
   });
 });
 
