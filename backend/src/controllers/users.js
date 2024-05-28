@@ -25,6 +25,76 @@ const { uploadUserImage } = require("../utils/cloudinary");
 
 require("dotenv").config();
 
+// Login process
+const login = async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: {
+        eng: "Email is missing",
+        esp: "Email es requerido",
+      },
+    });
+  }
+
+  if (!password) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: {
+        eng: "Password is missing",
+        esp: "Password es requerido",
+      },
+    });
+  }
+
+  try {
+    const emailExist = await checkEmailExist(email.toLowerCase());
+
+    if (!emailExist) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: {
+          eng: "Invalid Email or Password!",
+          esp: "La contraseña o el email ingresado es inválido!",
+        },
+      });
+    }
+
+    // Check password
+    bcrypt.compare(password, emailExist.password, async (err, isMatch) => {
+      if (err) {
+        return next("Error during the login process!");
+      }
+      if (!isMatch) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: {
+            eng: "Invalid Email or Password!",
+            esp: "La contraseña o el email ingresado es inválido!",
+          },
+        });
+      } else {
+        const userFound = await getAccountById(emailExist.id);
+
+        generateToken(res, userFound.id);
+
+        return res.status(200).json({
+          statusCode: 200,
+          msg: {
+            eng: "Login successfully!",
+            esp: "Ha iniciado sesión satisfactoriamente!",
+          },
+          data: userFound,
+        });
+      }
+    });
+  } catch (error) {
+    return next("Error trying to authenticate user");
+  }
+};
+
 // Create account
 const createAccount = async (req, res, next) => {
   const { email, password, password2 } = req.body;
@@ -113,4 +183,5 @@ const generateToken = (res, id) => {
 
 module.exports = {
   createAccount,
+  login,
 };
