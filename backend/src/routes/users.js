@@ -5,8 +5,10 @@ const { userAuthenticated } = require("../middleware/auth");
 
 const fileUpload = require("express-fileupload");
 
-const { createAccount, login } = require("../controllers/users");
+const { createAccount, login, logout } = require("../controllers/users");
 
+// Logout process
+router.post("/logout", logout);
 // Login process
 router.post("/login", login);
 // Create account
