@@ -8,7 +8,7 @@ const fileUpload = require("express-fileupload");
 const { createAccount, login, logout } = require("../controllers/users");
 
 // Logout process
-router.post("/logout", logout);
+router.post("/logout", userAuthenticated, logout);
 // Login process
 router.post("/login", login);
 // Create account
