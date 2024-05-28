@@ -25,6 +25,19 @@ const { uploadUserImage } = require("../utils/cloudinary");
 
 require("dotenv").config();
 
+// Logout process
+const logout = async (req, res, next) => {
+  res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+
+  res.status(200).json({
+    statusCode: 200,
+    msg: {
+      eng: "User logged out successfully!",
+      end: "Ha cerrado sesión satisfactoriamente!",
+    },
+  });
+};
+
 // Login process
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -184,4 +197,5 @@ const generateToken = (res, id) => {
 module.exports = {
   createAccount,
   login,
+  logout,
 };
