@@ -20,7 +20,7 @@ const User = db.define(
     },
     username: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     password: {
       type: DataTypes.STRING,
@@ -29,6 +29,10 @@ const User = db.define(
     state: {
       type: DataTypes.STRING,
       defaultValue: "Hello, I'm using Chatty!",
+    },
+    image: {
+      type: DataTypes.STRING,
+      defaultValue: null,
     },
     image_id: {
       type: DataTypes.STRING,
