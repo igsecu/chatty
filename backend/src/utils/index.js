@@ -7,53 +7,27 @@ const validateId = (id) => {
   return regexExp.test(id);
 };
 
-// Validate Name
-const validateName = (name) => {
-  if (name === 0 || name === false)
+// Validate Username
+const validateUsername = (username) => {
+  if (username === 0 || username === false)
     return {
-      eng: "Name must be a string",
-      esp: "Nombre formato no válido",
+      eng: "Username must be a string",
+      esp: "Username formato no válido",
     };
-  if (!name)
+  if (!username)
     return {
-      eng: "Name is missing",
-      esp: "Nombre es requerido",
+      eng: "Username is missing",
+      esp: "Username es requerido",
     };
-  if (typeof name !== "string")
+  if (typeof username !== "string")
     return {
-      eng: "Name must be a string",
-      esp: "Nombre formato no válido",
+      eng: "Username must be a string",
+      esp: "Username formato no válido",
     };
-  if (name.length > 20) {
+  if (username.length > 20) {
     return {
-      eng: "Name must be 20 characters length or less",
-      esp: "El nombre debe tener 20 caracteres o menos",
-    };
-  }
-  return false;
-};
-
-// Validate Lastname
-const validateLastname = (lastname) => {
-  if (lastname === 0 || lastname === false)
-    return {
-      eng: "Lastname must be a string",
-      esp: "Apellido formato no válido",
-    };
-  if (!lastname)
-    return {
-      eng: "Lastname is missing",
-      esp: "Apellido es requerido",
-    };
-  if (typeof lastname !== "string")
-    return {
-      eng: "Lastname must be a string",
-      esp: "Apellido formato no válido",
-    };
-  if (lastname.length > 20) {
-    return {
-      eng: "Lastname must be 20 characters length or less",
-      esp: "El apellido debe tener 20 caracteres o menos",
+      eng: "Username must be 20 characters length or less",
+      esp: "Username debe tener 20 caracteres o menos",
     };
   }
   return false;
@@ -296,8 +270,7 @@ const validatePage = (page) => {
 };
 
 module.exports = {
-  validateName,
-  validateLastname,
+  validateUsername,
   validateEmail,
   validatePassword,
   validatePasswordConfirmation,
