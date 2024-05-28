@@ -42,6 +42,16 @@ const logout = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
+  if (req.cookies.jwt) {
+    return res.status(400).json({
+      statusCode: 400,
+      msg: {
+        eng: "A user is already logged in!",
+        esp: "Un usuario ya ha iniciado sesión!",
+      },
+    });
+  }
+
   if (!email) {
     return res.status(400).json({
       statusCode: 400,
