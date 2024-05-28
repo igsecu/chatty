@@ -3,6 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const db = require("./src/database/db");
 const router = require("./src/routes/index");
+const cookieParser = require("cookie-parser");
 
 // Body-Parser middleware
 app.use(express.json());
@@ -19,6 +20,9 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
+
+// Cookie middleware
+app.use(cookieParser());
 
 // Router middleware
 app.use("/api", router);
