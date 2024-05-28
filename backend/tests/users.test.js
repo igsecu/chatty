@@ -213,6 +213,8 @@ describe("POST /api/account route -> check if email exists", () => {
   });
 });
 
+let cookie;
+
 describe("POST /api/users/login route -> login process", () => {
   it("it should return 400 status code -> email is missing", async () => {
     const response = await request(app).post("/api/users/login").send();
@@ -242,9 +244,20 @@ describe("POST /api/users/login route -> login process", () => {
       .post("/api/users/login")
       .send({ email: "user1@gmail.com", password: "Password14!" });
     expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
     //console.log(response.headers["set-cookie"]);
   });
 });
+
+describe("POST /api/users/logout route -> logout process", () => {
+  it("it should return 200 status code -> logout success", async () => {
+    const response = await request(app)
+      .post("/api/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+  });
+});
+
 /*
 describe("PUT /api/users/image route -> update user image", () => {
   it("it should return 401 status code -> not authorized", async () => {
