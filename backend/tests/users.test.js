@@ -412,30 +412,32 @@ describe("DELETE /api/users/image route -> delete user image", () => {
     cookie = response.headers["set-cookie"];
   });
 });
-/*
+
 describe("DELETE /api/users/account route -> delete user account", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const response = await request(app).delete("/api/users/account");
     expect(response.status).toBe(401);
   });
-  it("it should return 200 status code -> login successfull", async () => {
+  it("it should return 200 status code -> login successful", async () => {
     const response = await request(app)
       .post("/api/users/login")
-      .send({ email: "user2@gmail.com", password: "Password14!" });
+      .send({ email: "user1@gmail.com", password: "Password14!" });
     expect(response.status).toBe(200);
-    token = response.body.token;
+    cookie = response.headers["set-cookie"];
+    //console.log(response.headers["set-cookie"]);
   });
   /*  it("it should return 200 status code -> account image updated successfully", async () => {
     const response = await request(app)
       .put(`/api/users/image`)
-      .set("Authorization", `Bearer ${token}`)
-      .attach("image", `${__dirusername}/files/avatar2.png`);
+      .set("Cookie", cookie)
+      .attach("image", `${__dirname}/files/avatar2.png`);
     expect(response.status).toBe(200);
-  }); 
+  }); */
   it("it should return 200 status code -> account deleted", async () => {
     const response = await request(app)
       .delete("/api/users/account")
-      .set("Authorization", `Bearer ${token}`);
+      .set("Cookie", cookie);
     expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
   });
-}); */
+});
