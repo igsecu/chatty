@@ -246,6 +246,63 @@ const updateAccount = async (req, res, next) => {
   }
 };
 
+// Update user image
+const updateUserImage = async (req, res, next) => {
+  try {
+    if (req.files?.image) {
+      if (await validateFileType(req.files.image.tempFilePath)) {
+        const message = await validateFileType(req.files.image.tempFilePath);
+
+        await fsExtra.unlink(req.files.image.tempFilePath);
+
+        return res.status(400).json({
+          statusCode: 400,
+          msg: message,
+        });
+      }
+
+      if (await validateImageSize(req.files.image.tempFilePath)) {
+        const message = await validateImageSize(req.files.image.tempFilePath);
+
+        await fsExtra.unlink(req.files.image.tempFilePath);
+
+        return res.status(400).json({
+          statusCode: 400,
+          msg: message,
+        });
+      }
+
+      const result = await uploadUserImage(req.files.image.tempFilePath);
+
+      await fsExtra.unlink(req.files.image.tempFilePath);
+
+      const userUpdated = await updateProfileImage(
+        req.user.id,
+        result.secure_url,
+        result.public_id
+      );
+
+      return res.status(200).json({
+        statusCode: 200,
+        msg: {
+          eng: "Your profile image was updated successfully!",
+          esp: "Has actualizado tu imagen de perfil satisfactoriamente!",
+        },
+        data: userUpdated,
+      });
+    } else {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: { eng: "Image file is missing!", esp: "Imagen es requerida!" },
+      });
+    }
+  } catch (error) {
+    await fsExtra.unlink(req.files.image.tempFilePath);
+    console.log(error.message);
+    return next(error);
+  }
+};
+
 // Generate JWT
 const generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -265,4 +322,5 @@ module.exports = {
   login,
   logout,
   updateAccount,
+  updateUserImage,
 };
