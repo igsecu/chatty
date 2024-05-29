@@ -10,6 +10,7 @@ const {
   login,
   logout,
   updateAccount,
+  updateUserImage,
 } = require("../controllers/users");
 
 // Logout process
@@ -21,15 +22,15 @@ router.post("/register", createAccount);
 // Update account
 router.put("/account", userAuthenticated, updateAccount);
 // Update user image
-/* router.put(
-    "/image",
-    fileUpload({
-      useTempFiles: true,
-      tempFileDir: `${__dirname}/../uploads`,
-    }),
-    userAuthenticated,
-    updateUserImage
-  ); */
+router.put(
+  "/image",
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: `${__dirname}/../uploads`,
+  }),
+  userAuthenticated,
+  updateUserImage
+);
 // Delete user image
 /* router.delete("/image", userAuthenticated, deleteUserImage); */
 // Delete user account
