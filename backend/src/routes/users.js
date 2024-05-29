@@ -11,6 +11,7 @@ const {
   logout,
   updateAccount,
   updateUserImage,
+  deleteUserImage,
 } = require("../controllers/users");
 
 // Logout process
@@ -32,7 +33,7 @@ router.put(
   updateUserImage
 );
 // Delete user image
-/* router.delete("/image", userAuthenticated, deleteUserImage); */
+router.delete("/image", userAuthenticated, deleteUserImage);
 // Delete user account
 /* router.delete("/account", userAuthenticated, deleteUserAccount); */
 
