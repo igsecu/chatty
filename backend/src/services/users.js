@@ -56,8 +56,60 @@ const getAccountById = async (id) => {
   }
 };
 
+// Update Username
+const updateUsername = async (id, username) => {
+  try {
+    const updatedAccount = await User.update(
+      {
+        username,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedAccount[0] === 1) {
+      const account = await getAccountById(id);
+
+      return account;
+    }
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Error trying to update account username!");
+  }
+};
+
+// Update State
+const updateState = async (id, state) => {
+  try {
+    const updatedAccount = await User.update(
+      {
+        state,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedAccount[0] === 1) {
+      const account = await getAccountById(id);
+
+      return account;
+    }
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Error trying to update account state!");
+  }
+};
+
 module.exports = {
   checkEmailExist,
   createNewAccount,
   getAccountById,
+  updateUsername,
+  updateState,
 };
