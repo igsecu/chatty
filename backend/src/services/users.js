@@ -106,10 +106,43 @@ const updateState = async (id, state) => {
   }
 };
 
+// Update profile image
+const updateProfileImage = async (id, image, image_id) => {
+  try {
+    const account = await User.findByPk(id);
+
+    if (account.image_id !== null) {
+      await deleteImage(account.image_id);
+    }
+
+    const updatedAccount = await User.update(
+      {
+        image,
+        image_id,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+
+    if (updatedAccount[0] === 1) {
+      const account = await getAccountById(id);
+
+      return account;
+    }
+  } catch (error) {
+    console.log(error.message);
+    throw new Error("Error trying to update the writer account profile image!");
+  }
+};
+
 module.exports = {
   checkEmailExist,
   createNewAccount,
   getAccountById,
   updateUsername,
   updateState,
+  updateProfileImage,
 };
