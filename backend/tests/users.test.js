@@ -273,6 +273,47 @@ describe("POST /api/users/logout route -> logout process", () => {
   });
 });
 
+describe("PUT /api/users/account route -> update account", () => {
+  it("it should return 401 status code -> not authorized", async () => {
+    const response = await request(app).put("/api/users/account");
+    expect(response.status).toBe(401);
+  });
+  it("it should return 200 status code -> login successful", async () => {
+    const response = await request(app)
+      .post("/api/users/login")
+      .send({ email: "user1@gmail.com", password: "Password14!" });
+    expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
+    //console.log(response.headers["set-cookie"]);
+  });
+  it("it should return 400 status code -> query parameter is missing", async () => {
+    const response = await request(app)
+      .put("/api/users/account")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(400);
+  });
+  it("it should return 200 status code -> username updated", async () => {
+    const response = await request(app)
+      .put("/api/users/account?username=New Username")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+  });
+  it("it should return 200 status code -> state updated", async () => {
+    const response = await request(app)
+      .put("/api/users/account?username=Username&state=New State!")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    console.log(response.body);
+  });
+  it("it should return 200 status code -> logout success", async () => {
+    const response = await request(app)
+      .post("/api/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
+  });
+});
+
 /*
 describe("PUT /api/users/image route -> update user image", () => {
   it("it should return 401 status code -> not authorized", async () => {
