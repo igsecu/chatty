@@ -7,32 +7,6 @@ const validateId = (id) => {
   return regexExp.test(id);
 };
 
-// Validate Username
-const validateUsername = (username) => {
-  if (username === 0 || username === false)
-    return {
-      eng: "Username must be a string",
-      esp: "Username formato no válido",
-    };
-  if (!username)
-    return {
-      eng: "Username is missing",
-      esp: "Username es requerido",
-    };
-  if (typeof username !== "string")
-    return {
-      eng: "Username must be a string",
-      esp: "Username formato no válido",
-    };
-  if (username.length > 20) {
-    return {
-      eng: "Username must be 20 characters length or less",
-      esp: "Username debe tener 20 caracteres o menos",
-    };
-  }
-  return false;
-};
-
 // Validate email
 const validateEmail = (email) => {
   if (email === 0 || email === false)
@@ -269,6 +243,28 @@ const validatePage = (page) => {
   return false;
 };
 
+// Validate Username
+const validateUsername = (username) => {
+  if (username.length > 20) {
+    return {
+      eng: "Username must be 20 characters length or less",
+      esp: "Username debe tener 20 caracteres o menos",
+    };
+  }
+  return false;
+};
+
+// Validate State
+const validateState = (state) => {
+  if (state.length > 50) {
+    return {
+      eng: "State must be 50 characters length or less",
+      esp: "State debe tener 50 caracteres o menos",
+    };
+  }
+  return false;
+};
+
 module.exports = {
   validateUsername,
   validateEmail,
@@ -276,4 +272,5 @@ module.exports = {
   validatePasswordConfirmation,
   validateId,
   validatePage,
+  validateState,
 };
