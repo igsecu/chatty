@@ -332,6 +332,27 @@ const deleteUserImage = async (req, res, next) => {
   }
 };
 
+// Delete account
+const deleteUserAccount = async (req, res, next) => {
+  try {
+    const accountDeleted = await deleteAccount(req.user.id);
+
+    if (accountDeleted) {
+      res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+
+      return res.status(200).json({
+        statusCode: 200,
+        msg: {
+          eng: "Account deleted successfully!",
+          esp: "Cuenta eliminada satisfactoriamente!",
+        },
+      });
+    }
+  } catch (error) {
+    return next(error);
+  }
+};
+
 // Generate JWT
 const generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -353,4 +374,5 @@ module.exports = {
   updateAccount,
   updateUserImage,
   deleteUserImage,
+  deleteUserAccount,
 };
