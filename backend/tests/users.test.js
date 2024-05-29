@@ -314,54 +314,63 @@ describe("PUT /api/users/account route -> update account", () => {
   });
 });
 
-/*
 describe("PUT /api/users/image route -> update user image", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const response = await request(app).put("/api/users/image");
     expect(response.status).toBe(401);
   });
-  it("it should return 401 status code -> not authorized", async () => {
+  it("it should return 200 status code -> login successful", async () => {
     const response = await request(app)
-      .put("/api/users/image")
-      .set("Authorization", `Bearer hola`);
-    expect(response.status).toBe(401);
+      .post("/api/users/login")
+      .send({ email: "user1@gmail.com", password: "Password14!" });
+    expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
+    //console.log(response.headers["set-cookie"]);
   });
   it("it should return 400 status code -> image file is missing", async () => {
     const response = await request(app)
       .put(`/api/users/image`)
-      .set("Authorization", `Bearer ${token}`);
+      .set("Cookie", cookie);
     expect(response.status).toBe(400);
   });
   it("it should return 400 status code -> file type not allowed", async () => {
     const response = await request(app)
       .put(`/api/users/image`)
-      .set("Authorization", `Bearer ${token}`)
-      .attach("image", `${__dirusername}/files/file.txt`);
+      .set("Cookie", cookie)
+      .attach("image", `${__dirname}/files/file.txt`);
     expect(response.status).toBe(400);
   });
   it("it should return 400 status code -> file size not support", async () => {
     const response = await request(app)
       .put(`/api/users/image`)
-      .set("Authorization", `Bearer ${token}`)
-      .attach("image", `${__dirusername}/files/heavyimage.jpg`);
+      .set("Cookie", cookie)
+      .attach("image", `${__dirname}/files/heavyimage.jpg`);
     expect(response.status).toBe(400);
-  });
-  /*   it("it should return 200 status code -> account image updated successfully", async () => {
-    const response = await request(app)
-      .put(`/api/users/image`)
-      .set("Authorization", `Bearer ${token}`)
-      .attach("image", `${__dirusername}/files/avatar1.png`);
-    expect(response.status).toBe(200);
   });
   it("it should return 200 status code -> account image updated successfully", async () => {
     const response = await request(app)
       .put(`/api/users/image`)
-      .set("Authorization", `Bearer ${token}`)
-      .attach("image", `${__dirusername}/files/avatar2.png`);
+      .set("Cookie", cookie)
+      .attach("image", `${__dirname}/files/avatar1.png`);
     expect(response.status).toBe(200);
-  }); 
+  });
+  /*   it("it should return 200 status code -> account image updated successfully", async () => {
+    const response = await request(app)
+      .put(`/api/users/image`)
+      .set("Cookie", cookie)
+      .attach("image", `${__dirname}/files/avatar2.png`);
+    expect(response.status).toBe(200);
+    console.log(response.body);
+  });
+  it("it should return 200 status code -> logout success", async () => {
+    const response = await request(app)
+      .post("/api/users/logout")
+      .set("Cookie", cookie);
+    expect(response.status).toBe(200);
+    cookie = response.headers["set-cookie"];
+  }); */
 });
-
+/*
 describe("DELETE /api/users/image route -> delete user image", () => {
   it("it should return 401 status code -> not authorized", async () => {
     const response = await request(app).delete("/api/users/image");
