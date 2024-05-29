@@ -303,6 +303,35 @@ const updateUserImage = async (req, res, next) => {
   }
 };
 
+// Delete profile image
+const deleteUserImage = async (req, res, next) => {
+  try {
+    const account = await deleteProfileImage(req.user.id);
+
+    if (account === null) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: {
+          eng: "You do not have a profile image to delete!",
+          esp: "No tienes una imagen de perfil para eliminar!",
+        },
+      });
+    }
+
+    return res.status(200).json({
+      statusCode: 200,
+      msg: {
+        eng: "Profile image deleted successfully!",
+        esp: "Imagen de perfil eliminada satisfactoriamente!",
+      },
+      data: account,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return next("Error trying to delete writer account profile image");
+  }
+};
+
 // Generate JWT
 const generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -323,4 +352,5 @@ module.exports = {
   logout,
   updateAccount,
   updateUserImage,
+  deleteUserImage,
 };
