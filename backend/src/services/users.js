@@ -172,6 +172,29 @@ const deleteProfileImage = async (id) => {
   }
 };
 
+// Delete account
+const deleteAccount = async (id) => {
+  try {
+    const account = await User.findByPk(id);
+
+    if (account.image_id !== null) {
+      await deleteImage(account.image_id);
+    }
+
+    const deletedAccount = await User.destroy({
+      where: {
+        id,
+      },
+    });
+
+    if (deletedAccount) {
+      return deletedAccount;
+    }
+  } catch (error) {
+    throw new Error("Error trying to delete an account");
+  }
+};
+
 module.exports = {
   checkEmailExist,
   createNewAccount,
@@ -180,4 +203,5 @@ module.exports = {
   updateState,
   updateProfileImage,
   deleteProfileImage,
+  deleteAccount,
 };
