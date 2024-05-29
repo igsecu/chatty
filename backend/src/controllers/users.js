@@ -4,6 +4,7 @@ const fsExtra = require("fs-extra");
 
 const {
   validateUsername,
+  validateState,
   validateEmail,
   validatePassword,
   validatePasswordConfirmation,
@@ -18,6 +19,8 @@ const {
   updateProfileImage,
   deleteProfileImage,
   deleteAccount,
+  updateUsername,
+  updateState,
 } = require("../services/users");
 
 const { validateFileType, validateImageSize } = require("../utils/files.js");
@@ -190,6 +193,59 @@ const createAccount = async (req, res, next) => {
   }
 };
 
+// Update account
+const updateAccount = async (req, res, next) => {
+  const { username, state } = req.query;
+
+  try {
+    let accountUpdated;
+
+    if (username) {
+      if (validateUsername(username)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: validateUsername(username),
+        });
+      }
+
+      accountUpdated = await updateUsername(req.user.id, username);
+    }
+
+    if (state) {
+      if (validateState(state)) {
+        return res.status(400).json({
+          statusCode: 400,
+          msg: validateState(state),
+        });
+      }
+
+      accountUpdated = await updateState(req.user.id, state);
+    }
+
+    if (!username && !state) {
+      return res.status(400).json({
+        statusCode: 400,
+        msg: {
+          eng: "Username or state are missing!",
+          esp: "Username o state requeridos!",
+        },
+      });
+    }
+
+    res.status(200).json({
+      statusCode: 200,
+      msg: {
+        eng: "Account updated successfully!",
+        esp: "Cuenta actualizada satisfactoriamente!",
+      },
+      data: accountUpdated,
+    });
+  } catch (error) {
+    console.log(error.message);
+    return next(error);
+  }
+};
+
 // Generate JWT
 const generateToken = (res, id) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -208,4 +264,5 @@ module.exports = {
   createAccount,
   login,
   logout,
+  updateAccount,
 };
